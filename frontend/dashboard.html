@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Ejecutivo de Datos | Apex Analytics</title>
+  <!-- Estilos del proyecto -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Iconos del sistema -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header Corporativo del Dashboard -->
+  <header class="header-premium scrolled">
+    <div class="header-container">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        APEX<span>ANALYTICS</span>
+      </a>
+      
+      <div class="header-actions">
+        <!-- Botón para Registrar Nuevo Colaborador -->
+        <button id="btn-open-register" class="btn-premium-outline" style="padding: 10px 20px; font-size: 0.85rem;">
+          <i class="fa-solid fa-user-plus" style="margin-right: 6px;"></i> Registrar Acceso
+        </button>
+        <!-- Botón Cerrar Sesión -->
+        <button id="btn-logout" class="btn-premium" style="padding: 10px 20px; font-size: 0.85rem; background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff;">
+          <i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cuerpo del Dashboard -->
+  <div class="dashboard-wrapper">
+    <!-- Toolbar de bienvenida y estado -->
+    <section class="dashboard-toolbar">
+      <div class="toolbar-container">
+        <!-- Credenciales del usuario conectado (Badge) -->
+        <div class="user-badge">
+          <div class="user-avatar" id="user-avatar">U</div>
+          <div class="user-info">
+            <h5 id="user-name">Cargando Colaborador...</h5>
+            <span id="user-role">Acceso Autorizado</span>
+          </div>
+        </div>
+        <div>
+          <p style="font-size: 0.85rem; color: var(--color-text-gray); font-weight: 300;">
+            <i class="fa-regular fa-clock" style="color: var(--color-gold-primary); margin-right: 6px;"></i> Sesión protegida mediante encriptación SSL + JWT
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contenedor del Reporte de Power BI -->
+    <main class="powerbi-container">
+      <div class="powerbi-card" id="powerbi-container">
+        
+        <!-- Pantalla de carga del Iframe -->
+        <div class="dashboard-loader" id="loader">
+          <div class="spinner"></div>
+          <h4 style="font-weight: 600; font-size: 1.1rem; letter-spacing: 1px;">Conectando con Power BI</h4>
+          <p style="color: var(--color-text-gray); font-size: 0.85rem; font-weight: 300;">Descargando reportes financieros corporativos...</p>
+        </div>
+
+        <!-- Iframe de Power BI (Se inyectará la URL segura del .env por JS) -->
+        <iframe 
+          id="powerbi-iframe" 
+          class="powerbi-iframe" 
+          allowFullScreen="true"
+          title="Apex Corporate Financial Dashboard"
+        ></iframe>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Glassmorphic para Registro de Nuevos Colaboradores -->
+  <div class="modal" id="register-modal">
+    <div class="modal-content card-premium-glass">
+      <button class="modal-close" id="btn-close-modal">
+        <i class="fa-solid fa-xmark fa-xl"></i>
+      </button>
+
+      <div class="form-header">
+        <h3 style="font-size: 1.4rem;"><i class="fa-solid fa-user-shield" style="color: var(--color-gold-primary); margin-right: 8px;"></i> Autorizar Usuario</h3>
+        <p>Registre una nueva cuenta autorizada para ver el dashboard</p>
+      </div>
+
+      <!-- Alerta interna del Modal -->
+      <div id="modal-alert" class="alert-message"></div>
+
+      <form id="register-form">
+        <!-- Campo Nombre -->
+        <div class="form-group">
+          <label for="reg-name" class="form-label">Nombre Completo</label>
+          <div class="input-container">
+            <div class="input-icon"><i class="fa-regular fa-user"></i></div>
+            <input type="text" id="reg-name" class="form-input" placeholder="Ej. Carlos Mendoza" required>
+          </div>
+        </div>
+
+        <!-- Campo Email -->
+        <div class="form-group">
+          <label for="reg-email" class="form-label">Email Corporativo</label>
+          <div class="input-container">
+            <div class="input-icon"><i class="fa-regular fa-envelope"></i></div>
+            <input type="email" id="reg-email" class="form-input" placeholder="carlos@empresa.com" required>
+          </div>
+        </div>
+
+        <!-- Campo Rol -->
+        <div class="form-group">
+          <label for="reg-role" class="form-label">Rol Organizacional</label>
+          <div class="input-container">
+            <div class="input-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <select id="reg-role" class="form-input" style="padding-left: 46px; -webkit-appearance: none; appearance: none; cursor: pointer;">
+              <option value="Analista" selected>Analista de Datos</option>
+              <option value="Director">Director de Área</option>
+              <option value="Administrador">Administrador de Sistemas</option>
+            </select>
+            <div class="input-icon" style="left: auto; right: 16px; pointer-events: none;">
+              <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="form-group">
+          <label for="reg-password" class="form-label">Contraseña Temporal</label>
+          <div class="input-container">
+            <div class="input-icon"><i class="fa-solid fa-lock"></i></div>
+            <input type="password" id="reg-password" class="form-input" placeholder="Mínimo 6 caracteres" required minlength="6">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-premium" style="width: 100%; margin-top: 10px; padding: 14px;">
+          Registrar Acceso
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts del Dashboard -->
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
